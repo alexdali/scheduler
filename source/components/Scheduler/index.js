@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 
 //Components
 import Task from 'components/Task';
+import Catcher from 'components/Catcher';
 import Spinner from 'components/Spinner';
 
 // Instruments
 import Styles from './styles.m.css';
 import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
 
-const Tasks = [
+const staticTasks = [
     {
         id: 1,
         completed: false,
@@ -37,32 +38,72 @@ const Tasks = [
 ];
 
 export default class Scheduler extends Component {
-    //const searchTask;
+    state = {
+        tasks: staticTasks,
+        isSpinning: false,
+    }
 
     render () {
+        const searchTask = '';
+        const newTask = {};
+        const { tasks, isSpinning } = this.state;
+
+        const tasksJSX = tasks.map((task) => {
+            return (
+                <Catcher key = { task.id }>
+                    <Task
+                        { ...task }
+                        // _likePost = { this._likePost }
+                        // _removePost = { this._removePost }
+                    />
+                </Catcher>
+            );
+        });
+
         return (
             <section className = { Styles.scheduler }>
                 <main>
                     <header>
-                        <h1>
-                            Планировщик задач
-                        </h1>
-                        <form onSubmit = { this._handleFormSubmit }>
-                            <textarea
-                                placeholder = { `What's on your mind` }
-                                value = ''//{ searchTask }
-                                // onChange = { this._updateComment }
-                                // onKeyPress = { this._submitOnEnter }
-                            />
+                        <div>
+                            <h1>Планировщик задач</h1>
+                        </div>
+                        <div>
                             <input
-                                type = 'submit'
+                                type = 'text'
                                 value = 'Search'
                             />
-                        </form>
+                        </div>
                     </header>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder = { `Описание новой задачи` }
+                            value =  ''
+                            onChange = { this._updateComment }
+                            onKeyPress = { this._submitOnEnter }
+                        />
+                    </div>
+                    <section>
+                        <div>
+                            <form onSubmit = { this._handleFormSubmit }>
+                                <input
+                                    type='text'
+                                />
+                                <button onClick = {this.onClick}>
+                                    Добавить задачу
+                                </button>
+                            </form>
+                            <ul>{tasksJSX}</ul>
+                            <Spinner />
+                        </div>
+                    </section>
+                    <footer>
+                        <div></div>
+                        <div className = {Styles.completeAllTasks}>
+                            Все задачи выполнены
+                        </div>
+                    </footer>
                 </main>
-                <Task />
-                <Spinner />
             </section>
         );
     }
