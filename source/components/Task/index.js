@@ -18,13 +18,23 @@ export default class Task extends PureComponent {
     });
 
     render () {
-        console.log('Task this.props - ', this.props);
-        const { id, completed, favorite, message } = this.props;
+        //console.log('Task this.props - ', this.props);
+        const { id, completed, favorite, message,  _onChangeTask } = this.props;
         return  <li
                   className = { Styles.task }
                   id = { id }
                   //completed = { completed }
                   //favorite = { favorite }
-                >{ message }</li>;
+                >
+                    <div className = {Styles.content}>
+                        <span>
+                            <input
+                                type = 'text'
+                                value = { message }
+                                onChange = { _onChangeTask }
+                            />
+                        </span>
+                    </div>
+                </li>;
     }
 }
