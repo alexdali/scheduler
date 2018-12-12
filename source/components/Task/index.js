@@ -18,6 +18,13 @@ export default class Task extends PureComponent {
     });
 
     render () {
-        return <li className = { Styles.task }>Задача: стартовая точка</li>;
+        console.log('Task this.props - ', this.props);
+        const { id, completed, favorite, message } = this.props;
+        return  <li
+                  className = { Styles.task }
+                  id = { id }
+                  //completed = { completed }
+                  //favorite = { favorite }
+                >{ message }</li>;
     }
 }

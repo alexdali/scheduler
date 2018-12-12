@@ -41,12 +41,30 @@ export default class Scheduler extends Component {
     state = {
         tasks: staticTasks,
         isSpinning: false,
+        newTaskMessage: '',
+        searchTask: '',
+    };
+
+    _onClick = (event) => {
+
+    }
+
+    _handleFormSubmit = (event) => {
+
+    }
+
+    _onChangeNewTask = (event) => {
+
+    }
+
+    _onChangeSearch = (event) => {
+
     }
 
     render () {
-        const searchTask = '';
-        const newTask = {};
-        const { tasks, isSpinning } = this.state;
+        //const searchTask = '';
+        // const newTaskMessage = '';
+        const { searchTask, newTaskMessage, tasks, isSpinning } = this.state;
 
         const tasksJSX = tasks.map((task) => {
             return (
@@ -70,17 +88,18 @@ export default class Scheduler extends Component {
                         <div>
                             <input
                                 type = 'text'
-                                value = 'Search'
+                                value =  { searchTask }
+                                onChange = { this._onChangeSearch }
                             />
                         </div>
                     </header>
                     <div>
                         <input
                             type="text"
-                            placeholder = { `Описание новой задачи` }
-                            value =  ''
-                            onChange = { this._updateComment }
-                            onKeyPress = { this._submitOnEnter }
+                            placeholder = 'Описание новой задачи'
+                            value =  { newTaskMessage }
+                            onChange = { this._onChangeNewTask }
+                            // onKeyPress = { this._submitOnEnter }
                         />
                     </div>
                     <section>
