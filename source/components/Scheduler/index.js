@@ -39,26 +39,34 @@ const staticTasks = [
 
 export default class Scheduler extends Component {
     state = {
-        tasks: staticTasks,
-        isSpinning: false,
+        tasks:          staticTasks,
+        isSpinning:     false,
         newTaskMessage: '',
-        searchTask: '',
+        searchTask:     '',
     };
 
     _onClick = (event) => {
-
+        console.log('_onClick', event);
     }
 
     _handleFormSubmit = (event) => {
-
+        console.log('_handleFormSubmit', event);
     }
 
     _onChangeNewTask = (event) => {
-
+        console.log('_onChangeNewTask', event);
     }
 
     _onChangeSearch = (event) => {
 
+    }
+
+    _onChangeTask = (id) => {
+        console.log('_onChangeTask', id);
+    }
+
+    __completeTask = (id) => {
+        console.log('__completeTask', id);
     }
 
     render () {
@@ -71,8 +79,8 @@ export default class Scheduler extends Component {
                 <Catcher key = { task.id }>
                     <Task
                         { ...task }
-                        // _likePost = { this._likePost }
-                        // _removePost = { this._removePost }
+                        _onChangeTask = { this. _onChangeTask }
+                        _completeTask = { this. _completeTask }
                     />
                 </Catcher>
             );
