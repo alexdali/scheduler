@@ -9,71 +9,126 @@ import Spinner from 'components/Spinner';
 // Instruments
 import Styles from './styles.m.css';
 import Checkbox from 'theme/assets/Checkbox';
+import { BaseTaskModel } from 'instruments/';
 import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
 
 export default class Scheduler extends Component {
     state = {
-        tasks:          [
+        tasks: [
             {
-                id:        1,
+                id:        '1',
                 completed: false,
                 favorite: false,
                 message: 'first',
-            }, 
+            },
             {
-                id: 2,
+                id: '2',
                 completed: false,
                 favorite: false,
                 message: 'Second',
-            }, 
-            {
-                id: 3,
-                completed: false,
-                favorite: false,
-                message: 'Thirty',
-            }, 
-            {
-                id: 4,
-                completed: false,
-                favorite: false,
-                message: 'Fourty',
-            }, 
+            }
         ],
-        isSpinning: true,
+        newTaskMessage:  '',
+        tasksFilter:     '',
+        isTasksFetching: false,
     };
 
+    _fetchTasksAsync = () => {
+        console.log('_fetchTasksAsync');
+    }
+
+    _updateTasksFilter = () => {
+        console.log('_updateTasksFilter');
+    }
+
+    _getAllCompleted = () => {
+        console.log('_getAllCompleted');
+    }
+
+    _setTasksFetchingState = (state) => {
+        this.setState({
+            isTasksFetching: state,
+        });
+    }
+
     _onClick = (event) => {
-        console.log('_onClick', event);
+        event.preventDefault();
+        this._createTaskAsync();
     }
 
     _handleFormSubmit = (event) => {
-        console.log('_handleFormSubmit', event);
+        event.preventDefault();
+        this._createTaskAsync();
     }
 
-    _onChangeNewTask = (event) => {
-        console.log('_onChangeNewTask', event);
+    _createTaskAsync = () => {
+        console.log('_createTaskAsync');
+        const { newTaskMessage } = this.state;
+        //const newTask = new BaseTaskModel(void 0, false, false, newTaskMessage);
+
+        //console.log('_createTaskAsync: newTaskMessage', newTaskMessage);
+        //console.log('_createTaskAsync: newTask', newTask);
+        if (!newTaskMessage) {
+            return null;
+        }
+
+        this._setTasksFetchingState(true);
+        this.setState(({ tasks }) => (
+            {
+                tasks:           [...tasks, new BaseTaskModel(void 0, false, false, newTaskMessage)],
+                newTaskMessage:  '',
+                isTasksFetching: false,
+            }
+        ));
+    }
+
+    _updateNewTaskMessage = (event) => {
+        //console.log('_updateNewTaskMessage: event.target.value', event.target.value);
+
+        this.setState({
+            newTaskMessage: event.target.value,
+        });
     }
 
     _onChangeSearch = (event) => {
         console.log('_onChangeSearch', event);
     }
 
-    _updateTaskAsync = (id) => {
-        console.log('_updateTaskAsync', id);
+    _updateTaskAsync = (updatedTask) => {
+        console.log('_updateTaskAsync', updatedTask);
+        this._setTasksFetchingState(true);
+        this.setState(({ tasks }) => (
+            {
+                tasks: tasks.map((task) => {
+                    if (task.id === updatedTask.id) {
+                        return updatedTask;
+                    }
+
+                    return task;
+                }),
+            }
+        ));
     }
 
-    __completeTask = (id) => {
-        console.log('__completeTask', id);
-    }
+    // __completeTask = (id) => {
+    //     console.log('__completeTask', id);
+    // }
 
     _removeTaskAsync = (id) => {
         console.log('_removeTaskAsync', id);
     }
 
+    _completeAllTasksAsync= () => {
+        console.log('_completeAllTasksAsync');
+    }
+    // created:  "2018-06-13T19:23:33.028Z",
+    //     modified: "2018-06-21T18:43:41.752Z",
+
     render () {
-        const { tasks, isSpinning } = this.state;
+        const { tasks, isTasksFetching, newTaskMessage } = this.state;
 
         const tasksJSX = tasks.map((task) => {
+            //console.log('taskJSX');
             return (
                 <Catcher key = { task.id }>
                     <Task
@@ -87,9 +142,7 @@ export default class Scheduler extends Component {
 
         return (
             <section className = { Styles.scheduler } >
-                <Spinner isSpinning = { isSpinning } >
-                    <div className = { Styles.spinner } />
-                </Spinner>
+                <Spinner isSpinning = { isTasksFetching } />
                 <main>
                     <header>
                         <h1>Планировщик задач</h1>
@@ -107,10 +160,10 @@ export default class Scheduler extends Component {
                                 maxLength = { 50 }
                                 placeholder = 'Описaние моей новой задачи'
                                 type = 'text'
-                                value = ''
-                                onChange = { this._onChangeNewTask }
+                                value = { newTaskMessage }
+                                onChange = { this._updateNewTaskMessage }
                             />
-                            <button>Добавить задачу</button>
+                            <button onClick = { this._onClick }>Добавить задачу</button>
                         </form>
                         <div className = { Styles.overlay } >
                             <ul>
@@ -134,7 +187,7 @@ export default class Scheduler extends Component {
                             checked = { false }
                             color1 = '#363636'
                             color2 = '#fff'
-                            onClick = { this.__completeTask }
+                            onClick = { this._completeAllTasksAsync }
                         />
                         <span className = { Styles.completeAllTasks }>
                             Все задачи выполнены
