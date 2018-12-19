@@ -11,39 +11,35 @@ import Styles from './styles.m.css';
 import Checkbox from 'theme/assets/Checkbox';
 import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
 
-const staticTasks = [
-    {
-        id: 1,
-        completed: false,
-        favorite: false,
-        message: 'first',
-    }, 
-    {
-        id: 2,
-        completed: false,
-        favorite: false,
-        message: 'Second',
-    }, 
-    {
-        id: 3,
-        completed: false,
-        favorite: false,
-        message: 'Thirty',
-    }, 
-    {
-        id: 4,
-        completed: false,
-        favorite: false,
-        message: 'Fourty',
-    }, 
-];
-
 export default class Scheduler extends Component {
     state = {
-        tasks:          staticTasks,
-        isSpinning:     true,
-        newTaskMessage: '',
-        searchTask:     '',
+        tasks:          [
+            {
+                id:        1,
+                completed: false,
+                favorite: false,
+                message: 'first',
+            }, 
+            {
+                id: 2,
+                completed: false,
+                favorite: false,
+                message: 'Second',
+            }, 
+            {
+                id: 3,
+                completed: false,
+                favorite: false,
+                message: 'Thirty',
+            }, 
+            {
+                id: 4,
+                completed: false,
+                favorite: false,
+                message: 'Fourty',
+            }, 
+        ],
+        isSpinning: true,
     };
 
     _onClick = (event) => {
@@ -75,9 +71,7 @@ export default class Scheduler extends Component {
     }
 
     render () {
-        //const searchTask = '';
-        // const newTaskMessage = '';
-        const { searchTask, newTaskMessage, tasks, isSpinning } = this.state;
+        const { tasks, isSpinning } = this.state;
 
         const tasksJSX = tasks.map((task) => {
             return (

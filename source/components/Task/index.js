@@ -45,7 +45,7 @@ export default class Task extends PureComponent {
     } 
 
     render () {
-        //console.log('Task this.props - ', this.props);
+        console.log('Task this.props - ', this.props);
         const {
             _removeTaskAsync,
             _updateTaskAsync,
@@ -61,44 +61,45 @@ export default class Task extends PureComponent {
             <li className = { Styles.task } >
                 <div className = 'content'>
                     <Checkbox
-                        checked = { false }
+                        inlineBlock
+                        checked = { completed }
                         className = { Styles.toggleTaskCompletedState }
                         color1 = '#3B8EF3'
                         color2 = '#FFF'
-                        inlineBlock
                         onClick = { _updateTaskAsync }
                     />
+                    <span />
                     <input
                         disabled
                         maxLength = { 50 }
+                        type = 'text'
+                        value = { message }
                         onChange = { _updateTaskAsync }
                         onKeyDown = { _updateTaskAsync }
-                        type = 'text'
-                        value = 'Выполнить важную задачу.'
                     />
                 </div>
                 <div className = { Styles.actions }>
                     <Star
-                        checked = { false }
+                        inlineBlock
+                        checked = { favorite }
                         className = { Styles.toggleTaskFavoriteState }
                         color1 = '#3B8EF3'
                         color2 = '#000'
-                        inlineBlock
                         onClick = { _updateTaskAsync }
                     />
                     <Edit
+                        inlineBlock
                         checked = { false }
                         className = { Styles.updateTaskMessageOnClick }
                         color1 = '#3B8EF3'
                         color2 = '#000'
-                        inlineBlock
                         onClick = { _updateTaskAsync }
                     />
                     <Remove
+                        inlineBlock
                         className = { Styles.removeTask }
                         color1 = '#3B8EF3'
                         color2 = '#000'
-                        inlineBlock
                         onClick = { _removeTaskAsync }
                     />
                 </div>
