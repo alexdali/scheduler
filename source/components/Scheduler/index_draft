@@ -1,0 +1,66 @@
+
+<Scheduler>
+  <section className = { Styles.scheduler } >
+    <Spinner
+      isSpinning = { true }
+    >
+      <div className = { Styles.spinner } />
+    </Spinner>
+    <main>
+      <header>
+        <h1>Планировщик задач</h1>
+        <input
+          onChange = { [MockFunction] }
+          placeholder = 'Поиск'
+          type = 'search'
+          value = ''
+        />
+      </header>
+      <section>
+        <form onSubmit = { [MockFunction] }>
+          <input
+            className = { Styles.createTask } 
+            maxLength = { 50 }
+            onChange = { [MockFunction] }
+            placeholder = 'Описaние моей новой задачи'
+            type = 'text'
+            value = ''
+          />
+          <button>Добавить задачу</button>
+        </form>
+        <div className = { Styles.overlay } >
+          <ul>
+            <div
+              style = { 
+                Object { 
+                  'position': 'relative',
+                  }
+                }
+            >
+              <Task
+                _removeTaskAsync = { [MockFunction] }
+                _updateTaskAsync = { [MockFunction] }
+                completed = { false }
+                favorite = { false }
+                id = '123'
+                key = '.$123'
+                message = 'Выполнить важную задачу (создано в конструкторе).'
+              />
+            </div>
+          </ul>
+        </div>
+      </section>
+      <footer>
+        <Checkbox
+          checked = { false }
+          color1 = '#363636'
+          color2 = '#fff'
+          onClick = { [MockFunction] }
+        />
+        <span className = { Styles.completeAllTasks }>
+          Все задачи выполнены
+        </span>
+      </footer>
+    </main>
+  </section>
+</Scheduler>

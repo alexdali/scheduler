@@ -8,6 +8,7 @@ import Spinner from 'components/Spinner';
 
 // Instruments
 import Styles from './styles.m.css';
+import Checkbox from 'theme/assets/Checkbox';
 import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
 
 const staticTasks = [
@@ -40,7 +41,7 @@ const staticTasks = [
 export default class Scheduler extends Component {
     state = {
         tasks:          staticTasks,
-        isSpinning:     false,
+        isSpinning:     true,
         newTaskMessage: '',
         searchTask:     '',
     };
@@ -58,15 +59,19 @@ export default class Scheduler extends Component {
     }
 
     _onChangeSearch = (event) => {
-
+        console.log('_onChangeSearch', event);
     }
 
-    _onChangeTask = (id) => {
-        console.log('_onChangeTask', id);
+    _updateTaskAsync = (id) => {
+        console.log('_updateTaskAsync', id);
     }
 
     __completeTask = (id) => {
         console.log('__completeTask', id);
+    }
+
+    _removeTaskAsync = (id) => {
+        console.log('_removeTaskAsync', id);
     }
 
     render () {
@@ -79,56 +84,67 @@ export default class Scheduler extends Component {
                 <Catcher key = { task.id }>
                     <Task
                         { ...task }
-                        _onChangeTask = { this. _onChangeTask }
-                        _completeTask = { this. _completeTask }
+                        _removeTaskAsync = { this._removeTaskAsync }
+                        _updateTaskAsync = { this._updateTaskAsync }
                     />
                 </Catcher>
             );
         });
 
         return (
-            <section className = { Styles.scheduler }>
+            <section className = { Styles.scheduler } >
+                <Spinner isSpinning = { isSpinning } >
+                    <div className = { Styles.spinner } />
+                </Spinner>
                 <main>
                     <header>
-                        <div>
-                            <h1>Планировщик задач</h1>
-                        </div>
-                        <div>
-                            <input
-                                type = 'text'
-                                value =  { searchTask }
-                                onChange = { this._onChangeSearch }
-                            />
-                        </div>
-                    </header>
-                    <div>
+                        <h1>Планировщик задач</h1>
                         <input
-                            type="text"
-                            placeholder = 'Описание новой задачи'
-                            value =  { newTaskMessage }
-                            onChange = { this._onChangeNewTask }
-                            // onKeyPress = { this._submitOnEnter }
+                            placeholder = 'Поиск'
+                            type = 'search'
+                            value = ''
+                            onChange = { this._onChangeSearch }
                         />
-                    </div>
+                    </header>
                     <section>
-                        <div>
-                            <form onSubmit = { this._handleFormSubmit }>
-                                <input
-                                    type='text'
-                                />
-                                <button onClick = {this.onClick}>
-                                    Добавить задачу
-                                </button>
-                            </form>
-                            <ul>{tasksJSX}</ul>
-                            <Spinner />
+                        <form onSubmit = { this._handleFormSubmit }>
+                            <input
+                                className = { Styles.createTask } 
+                                maxLength = { 50 }
+                                placeholder = 'Описaние моей новой задачи'
+                                type = 'text'
+                                value = ''
+                                onChange = { this._onChangeNewTask }
+                            />
+                            <button>Добавить задачу</button>
+                        </form>
+                        <div className = { Styles.overlay } >
+                            <ul>
+                                <div>
+                                    { tasksJSX }
+                                    {/* <Task
+                                        _removeTaskAsync = { this._removeTaskAsync }
+                                        _updateTaskAsync = { this._updateTaskAsync }
+                                        completed = { false }
+                                        favorite = { false }
+                                        id = '123'
+                                        key = '.$123'
+                                        message = 'Выполнить важную задачу'
+                                    /> */}
+                                </div>
+                            </ul>
                         </div>
                     </section>
                     <footer>
-                        <div></div>
-                        <div className = {Styles.completeAllTasks}>
+                        <Checkbox
+                            checked = { false }
+                            color1 = '#363636'
+                            color2 = '#fff'
+                            onClick = { this.__completeTask }
+                        />
+                        <span className = { Styles.completeAllTasks }>
                             Все задачи выполнены
-                        </div>
+                        </span>
                     </footer>
                 </main>
             </section>

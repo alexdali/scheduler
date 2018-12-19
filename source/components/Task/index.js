@@ -1,13 +1,19 @@
 // Core
 import React, { PureComponent } from 'react';
 
-// Components
-import Checkbox from 'components/Checkbox';
 // Instruments
 import Styles from './styles.m.css';
-import { withSvg } from 'instruments/withSvg';
+import Checkbox from 'theme/assets/Checkbox';
+import Remove from 'theme/assets/Remove';
+import Star from 'theme/assets/Star';
+import Edit from 'theme/assets/Edit';
 
 export default class Task extends PureComponent {
+    state = {
+        created:  "2018-06-13T19:23:33.028Z",
+        modified: "2018-06-21T18:43:41.752Z",
+    }
+
     _getTaskShape = ({
         id = this.props.id,
         completed = this.props.completed,
@@ -20,46 +26,83 @@ export default class Task extends PureComponent {
         message,
     });
 
-    _onChangeTask = () => {
-        const { _onChangeTask, id } = this.props; 
+    // _updateTaskAsync = () => {
+    //     const { _updateTaskAsync, id } = this.props; 
 
-        _onChangeTask(id);
-    }
+    //     _updateTaskAsync(id);
+    // }
+
+    // _removeTaskAsync = () => {
+    //     const { _removeTaskAsync, id } = this.props; 
+
+    //     _removeTaskAsync(id);
+    // }   
 
     _completeTask = () => {
         const { _completeTask, id } = this.props; 
 
         _completeTask(id);
-    }
+    } 
 
     render () {
         //console.log('Task this.props - ', this.props);
-        const { id, completed, favorite, message } = this.props;
-        //const objectTask = this._getTaskShape();
-        return  <li
-                  className = { Styles.task }
-                  id = { id }
-                  //completed = { completed }
-                  //favorite = { favorite }
-                >
-                    <div className = {Styles.content}>
-                        {/* <Checkbox
-                            inlineBlock
-                            checked = { completed }
-                            className = { Styles.toggleTaskCompletedState }
-                            color1 = '#3B8EF3'
-                            color2 = '#FFF'
-                            onClick = { this._completeTask }
-                        /> */}
+        const {
+            _removeTaskAsync,
+            _updateTaskAsync,
+            completed,
+            favorite,
+            id,
+            message
+        } = this.props;
 
-                        <span>
-                            <input
-                                type = 'text'
-                                value = { message }
-                                onChange = { this._onChangeTask }
-                            />
-                        </span>
-                    </div>
-                </li>;
+        const { created, modified } = this.state;
+
+        return (
+            <li className = { Styles.task } >
+                <div className = 'content'>
+                    <Checkbox
+                        checked = { false }
+                        className = { Styles.toggleTaskCompletedState }
+                        color1 = '#3B8EF3'
+                        color2 = '#FFF'
+                        inlineBlock
+                        onClick = { _updateTaskAsync }
+                    />
+                    <input
+                        disabled
+                        maxLength = { 50 }
+                        onChange = { _updateTaskAsync }
+                        onKeyDown = { _updateTaskAsync }
+                        type = 'text'
+                        value = 'Выполнить важную задачу.'
+                    />
+                </div>
+                <div className = { Styles.actions }>
+                    <Star
+                        checked = { false }
+                        className = { Styles.toggleTaskFavoriteState }
+                        color1 = '#3B8EF3'
+                        color2 = '#000'
+                        inlineBlock
+                        onClick = { _updateTaskAsync }
+                    />
+                    <Edit
+                        checked = { false }
+                        className = { Styles.updateTaskMessageOnClick }
+                        color1 = '#3B8EF3'
+                        color2 = '#000'
+                        inlineBlock
+                        onClick = { _updateTaskAsync }
+                    />
+                    <Remove
+                        className = { Styles.removeTask }
+                        color1 = '#3B8EF3'
+                        color2 = '#000'
+                        inlineBlock
+                        onClick = { _removeTaskAsync }
+                    />
+                </div>
+            </li>
+        );
     }
 }
